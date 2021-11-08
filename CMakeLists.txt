@@ -9,7 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
 )
 
-find_package(OpenCV REQUIRED)
+find_package(OpenCV REQUIRED NO_MODULE PATHS /usr/local NO_DEFAULT_PATH)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(gphoto2 REQUIRED libgphoto2)
