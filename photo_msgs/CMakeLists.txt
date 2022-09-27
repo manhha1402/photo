@@ -1,0 +1,50 @@
+cmake_minimum_required(VERSION 3.5)
+project(photo_msgs)
+include(cmake/project_version.cmake)
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+# Default to C++17
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
+endif()
+
+
+# Default to release build
+if(NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
+endif()
+message( STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}" )
+
+find_package(ament_cmake REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(std_msgs REQUIRED)
+
+
+set(srv_files
+    "srv/Capture.srv"
+    "srv/GetConfig.srv"
+    "srv/SetConfig.srv"
+)
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+  ${srv_files}
+  DEPENDENCIES rosidl_default_runtime std_msgs sensor_msgs
+  ADD_LINTER_TESTS
+)
+
+ament_export_dependencies(rosidl_default_runtime std_msgs sensor_msgs)
+
+ament_package()
+
+######################################
+## Define information for packaging ##
+######################################
+# optionally specify dependencies of the debian package here (comma separated!)
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "ros-$ENV{ROS_DISTRO}-std-msgs, ros-$ENV{ROS_DISTRO}-sensor-msgs")
+include(cmake/package_debian.cmake)
+
+
