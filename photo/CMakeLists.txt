@@ -1,5 +1,7 @@
 cmake_minimum_required (VERSION 3.8 FATAL_ERROR)
-project(photo)
+project(photo LANGUAGES CXX)
+include(cmake/project_version.cmake)
+
 # Save the command line compile commands in the build output
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 # Default to C++17
@@ -54,9 +56,9 @@ add_library(${PROJECT_NAME}_lib SHARED
 target_link_libraries(${PROJECT_NAME}_lib
   ${OpenCV_LIBRARIES}
 )
-ament_target_dependencies(${PROJECT_NAME}_lib
-  ${DEPS}
-)
+#ament_target_dependencies(${PROJECT_NAME}_lib
+#  ${DEPS}
+#)
 target_include_directories(${PROJECT_NAME}_lib PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
@@ -73,12 +75,16 @@ target_link_libraries(photo_node
   ${PROJECT_NAME}_lib
   ${gphoto2_LIBRARIES}
 )
-
+ament_target_dependencies(photo_node
+  ${DEPS}
+)
 target_link_libraries(test_photo
     ${PROJECT_NAME}_lib
     ${gphoto2_LIBRARIES}
 )
-
+ament_target_dependencies(test_photo
+  ${DEPS}
+)
 ###########
 # INSTALL #
 ###########
@@ -107,3 +113,4 @@ ament_export_libraries(${PROJECT_NAME}_lib) #  equivalent to catkin_package(LIBR
 ament_export_dependencies(${DEPS})
 
 ament_package()
+include(cmake/package_debian.cmake)
