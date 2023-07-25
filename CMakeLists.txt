@@ -1,5 +1,7 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required (VERSION 3.8 FATAL_ERROR)
 project(photo)
+include(cmake/project_version.cmake)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 find_package(catkin REQUIRED COMPONENTS
   message_generation
@@ -77,3 +79,7 @@ install(TARGETS photo2 photo_node test_photo
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
 )
+###########
+## Cpack ##
+###########
+include(cmake/package_debian.cmake)
